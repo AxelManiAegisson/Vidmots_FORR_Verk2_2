@@ -8,7 +8,7 @@ function main() {
     const renderer = new THREE.WebGLRenderer({canvas});
     //set upp myndavél
     const fov = 75;
-    const aspect = 2;  // the canvas default
+    const aspect = 2;  
     const near = 0.1;
     const far = 5;
     const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
@@ -36,6 +36,17 @@ function main() {
     const cube = new THREE.Mesh(geometry, material);
     //teikna kasssa
     scene.add(cube);
+    //bætti við interaction þannig að ef þú hoverar yfir kubbin þá minnkar hann en þegar þú ferð af honum þá stækar hann aftur.
+    const domEvents = new THREEx.DomEvents(camera, renderer.domElement)
+    //minnka kubb þegar mús fer yfir
+    domEvents.addEventListener(cube, 'mouseover', event =>{
+    	cube.scale.set(.5,.5,.5);
+    })
+    //stækka kubb þegar mús fer yfir
+    domEvents.addEventListener(cube, 'mouseout', event =>{
+    	cube.scale.set(1,1,1);
+    })
+
     //teikna senuna
     renderer.render(scene, camera);
     //animation
@@ -50,6 +61,9 @@ function main() {
 		requestAnimationFrame(render);
 	}
 	requestAnimationFrame(render);
+
+
+
 }
 
 main();
